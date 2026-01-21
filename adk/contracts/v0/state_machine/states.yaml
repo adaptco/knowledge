@@ -1,0 +1,13 @@
+states:
+  - name: DRAFT
+    description: Initial state, open for modification.
+  - name: COMPILED
+    description: Artifact content is fixed and addressed.
+  - name: EXECUTED
+    description: Artifact has been run or simulated in a controlled environment.
+  - name: VALIDATED
+    description: All gates have passed.
+  - name: FINALIZED
+    description: Immutable, sealed state.
+  - name: REJECTED
+    description: Failed validation or explicit rejection.

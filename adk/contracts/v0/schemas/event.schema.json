@@ -1,0 +1,42 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://adk.contracts/v0/schemas/event.schema.json",
+    "title": "Event",
+    "type": "object",
+    "required": [
+        "id",
+        "type",
+        "timestamp",
+        "payload"
+    ],
+    "properties": {
+        "id": {
+            "type": "string",
+            "description": "Unique, stable event ID"
+        },
+        "type": {
+            "type": "string",
+            "enum": [
+                "ingest",
+                "plan",
+                "execute",
+                "gate_run",
+                "emit",
+                "finalize"
+            ],
+            "description": "The lifecycle stage this event represents"
+        },
+        "timestamp": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "payload": {
+            "type": "object",
+            "description": "Event-specific data"
+        },
+        "context": {
+            "type": "object",
+            "description": "Trace context, user context, external refs"
+        }
+    }
+}

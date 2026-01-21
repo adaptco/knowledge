@@ -1,0 +1,41 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://adk.contracts/v0/schemas/artifact.schema.json",
+  "title": "Artifact",
+  "type": "object",
+  "required": ["id", "type", "uri", "digest", "createdAt"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique identifier for this artifact record"
+    },
+    "type": {
+      "type": "string",
+      "description": "Type of artifact (e.g., docker_image, binary, report)"
+    },
+    "uri": {
+      "type": "string",
+      "format": "uri",
+      "description": "Location of the artifact"
+    },
+    "digest": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$",
+      "description": "Content-addressable hash (sha256)"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "description": "References to Evidence IDs"
+      }
+    },
+    "metadata": {
+      "type": "object"
+    }
+  }
+}

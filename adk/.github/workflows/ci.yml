@@ -1,0 +1,21 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Validate Contracts
+        run: ./cli/adk.sh validate contracts
+      - name: Run Tests
+        run: |
+          ./tests/contracts/schema_self_test.sh
+          ./tests/integration/golden_path_test.sh
+  build-cli:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build Docker Image
+        run: docker build -t adk-cli -f cli/Dockerfile .

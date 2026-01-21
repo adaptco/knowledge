@@ -1,0 +1,17 @@
+gates:
+  - name: schema_validation
+    intent: Ensure all artifacts match strict JSON schemas.
+    severity: critical
+    fail_closed: true
+  - name: license_check
+    intent: Verify no GPL dependencies in production bundle.
+    severity: high
+    fail_closed: true
+  - name: unit_tests
+    intent: Project-specific logic tests.
+    severity: medium
+    fail_closed: false
+  - name: security_scan
+    intent: Static analysis for vulnerabilities.
+    severity: high
+    fail_closed: true

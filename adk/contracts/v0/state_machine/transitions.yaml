@@ -1,0 +1,22 @@
+transitions:
+  - from: DRAFT
+    to: COMPILED
+    required_evidence:
+      - build_log
+      - checksum
+  - from: COMPILED
+    to: EXECUTED
+    required_evidence:
+      - execution_trace
+  - from: EXECUTED
+    to: VALIDATED
+    required_evidence:
+      - gate_report
+  - from: VALIDATED
+    to: FINALIZED
+    required_evidence:
+      - signature
+  - from: [DRAFT, COMPILED, EXECUTED, VALIDATED]
+    to: REJECTED
+    required_evidence:
+      - rejection_reason

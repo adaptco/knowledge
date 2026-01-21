@@ -1,0 +1,12 @@
+{
+    "project_name": "example-service",
+    "version": "1.0.0",
+    "build_command": "echo 'building'",
+    "tests": true,
+    "artifacts": [
+        {
+            "type": "docker_image",
+            "uri": "ghcr.io/example/service:1.0.0"
+        }
+    ]
+}

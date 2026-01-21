@@ -1,0 +1,9 @@
+severities:
+  - level: critical
+    implication: Block release, notify security team immediately.
+  - level: high
+    implication: Block release, require manual override from admin.
+  - level: medium
+    implication: Warn, requires acknowledgement to proceed.
+  - level: low
+    implication: Log in report, no blocking.

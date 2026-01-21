@@ -1,0 +1,13 @@
+mappings:
+  - public: event_log
+    internal: SSOT
+    description: The immutable record of all system events.
+  - public: registry
+    internal: LUT
+    description: Lookup table for artifact resolution.
+  - public: artifact_bundle
+    internal: capsule
+    description: The distributable unit of software.
+  - public: replay
+    internal: Replay Court
+    description: The process of verifying a log by re-executing it.
