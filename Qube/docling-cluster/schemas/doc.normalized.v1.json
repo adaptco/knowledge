@@ -1,0 +1,90 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "$id": "https://docling.contracts/v1/doc.normalized.v1.json",
+    "title": "Normalized Document",
+    "type": "object",
+    "required": [
+        "id",
+        "source_hash",
+        "content",
+        "metadata",
+        "normalized_at"
+    ],
+    "properties": {
+        "id": {
+            "type": "string",
+            "description": "Unique document ID (derived from source_hash)"
+        },
+        "source_hash": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$",
+            "description": "SHA256 hash of the original document content"
+        },
+        "content": {
+            "type": "object",
+            "required": [
+                "text",
+                "structure"
+            ],
+            "properties": {
+                "text": {
+                    "type": "string",
+                    "description": "Full extracted text content"
+                },
+                "structure": {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "required": [
+                            "type",
+                            "start",
+                            "end"
+                        ],
+                        "properties": {
+                            "type": {
+                                "type": "string",
+                                "enum": [
+                                    "heading",
+                                    "paragraph",
+                                    "list",
+                                    "table",
+                                    "code"
+                                ]
+                            },
+                            "start": {
+                                "type": "integer"
+                            },
+                            "end": {
+                                "type": "integer"
+                            },
+                            "level": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "metadata": {
+            "type": "object",
+            "properties": {
+                "title": {
+                    "type": "string"
+                },
+                "author": {
+                    "type": "string"
+                },
+                "language": {
+                    "type": "string"
+                },
+                "source_type": {
+                    "type": "string"
+                }
+            }
+        },
+        "normalized_at": {
+            "type": "string",
+            "format": "date-time"
+        }
+    }
+}

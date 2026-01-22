@@ -9,6 +9,21 @@
             "args": []
         },
         {
+            "name": "PowerShell: Launch Short File",
+            "type": "PowerShell",
+            "request": "launch",
+            "script": "${file}",
+            "args": [],
+            "cwd": "${fileDirname}"
+        },
+        {
+            "name": "Batch: Launch Current File",
+            "type": "shell",
+            "request": "launch",
+            "command": "${file}",
+            "cwd": "${fileDirname}"
+        },
+        {
             "name": "Containers: Python - Fastapi",
             "type": "docker",
             "request": "launch",

@@ -1,0 +1,18 @@
+# Docling Pipeline Requirements (root)
+# Used for combined builds
+
+# Common
+pydantic==2.6.0
+
+# Workers
+celery[redis]==5.3.6
+torch>=2.0.0
+sentence-transformers>=2.2.0
+docling==2.0.0
+
+# API
+fastapi[all]==0.109.0
+uvicorn[standard]==0.27.0
+
+# Utilities
+requests>=2.28.0
