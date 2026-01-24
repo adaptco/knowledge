@@ -1,0 +1,4 @@
+fastapi[all]==0.109.0
+uvicorn[standard]==0.27.0
+pydantic>=2.0.0
+torch>=2.0.0

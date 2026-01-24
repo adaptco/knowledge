@@ -7,7 +7,7 @@ services:
     ports:
       - "6379:6379"
     healthcheck:
-      test: ["CMD", "redis-cli", "ping"]
+      test: [ "CMD", "redis-cli", "ping" ]
       interval: 5s
       timeout: 3s
       retries: 3
@@ -19,7 +19,7 @@ services:
     volumes:
       - qdrant_data:/qdrant/storage
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      test: [ "CMD", "curl", "-f", "http://localhost:6333/health" ]
       interval: 10s
       timeout: 5s
       retries: 3
@@ -56,15 +56,15 @@ services:
       ledger:
         condition: service_started
 
-  embed_worker:
+  embed-worker:
     build:
       context: .
-      dockerfile: ./embed_worker/Dockerfile
+      dockerfile: ./services/embed-worker/Dockerfile
     environment:
       - REDIS_URL=redis://redis:6379
-      - QDRANT_HOST=qdrant
-      - QDRANT_PORT=6333
+      - QDRANT_URL=http://qdrant:6333
       - LEDGER_URL=http://ledger:8001
+      - CAPSULE_URL=http://capsule-model:8002
     depends_on:
       redis:
         condition: service_healthy
@@ -72,11 +72,28 @@ services:
         condition: service_healthy
       ledger:
         condition: service_started
+      capsule-model:
+        condition: service_started
+
+  capsule-model:
+    build:
+      context: .
+      dockerfile: ./services/capsule-model/Dockerfile
+    ports:
+      - "8002:8002"
+    environment:
+      - REDIS_URL=redis://redis:6379
+      - LORA_REGISTRY_PATH=/app/data/lora_registry
+    volumes:
+      - lora_data:/app/data/lora_registry
+    depends_on:
+      redis:
+        condition: service_healthy
 
   ledger:
     build:
       context: .
-      dockerfile: ./ledger/Dockerfile
+      dockerfile: ./services/ledger/Dockerfile
     ports:
       - "8001:8001"
     environment:
@@ -88,3 +105,4 @@ volumes:
   qdrant_data:
   ledger_data:
   shared_data:
+  lora_data:

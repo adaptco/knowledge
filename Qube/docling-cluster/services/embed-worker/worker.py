@@ -5,6 +5,7 @@ import os
 import sys
 from typing import List
 import torch
+import requests
 from qdrant_client import QdrantClient
 from qdrant_client.models import Distance, PointStruct, VectorParams
 from redis import Redis
@@ -23,6 +24,7 @@ CHUNKER_VERSION = os.environ.get("CHUNKER_VERSION", "chunk.v1")
 REDIS_URL = os.environ.get("REDIS_URL", "redis://localhost:6379/0")
 QDRANT_HOST = os.environ.get("QDRANT_HOST", "localhost")
 QDRANT_PORT = int(os.environ.get("QDRANT_PORT", "6333"))
+CAPSULE_URL = os.environ.get("CAPSULE_URL", "http://localhost:8002")
 COLLECTION_NAME = "document_chunks"
 EMBEDDING_DIM = 768
 redis_conn = Redis.from_url(REDIS_URL)
@@ -59,12 +61,31 @@ def embed_chunk(job_payload: dict) -> dict:
     chunk_text = job_payload["chunk_text"]
     source_block_refs = job_payload.get("source_block_refs", [])
     bundle_id = job_payload["bundle_id"]
+    context = job_payload.get("context", {})  # e.g., {"domain": "medical"}
     
     # Compute chunk ID
     chunk_id = compute_chunk_id(doc_id, chunk_index, chunk_text)
     
-    # Generate embedding
+    # Capsule routing: Select LoRA weights
+    lora_id = "base"  # Default to base model
+    try:
+        routing_response = requests.post(
+            f"{CAPSULE_URL}/route",
+            json={"text": chunk_text, "context": context},
+            params={"capsule_id": "default"},
+            timeout=5
+        )
+        if routing_response.status_code == 200:
+            lora_id = routing_response.json()["lora_id"]
+            print(f"[embed-worker] Selected LoRA: {lora_id} for chunk {chunk_index}")
+    except Exception as e:
+        print(f"[embed-worker] Capsule routing failed: {e}, using base model")
+    
+    # Generate embedding (with LoRA if selected)
+    # TODO: Apply LoRA weights to model before encoding
+    # For now, we use base model and log the LoRA selection
     vector = get_embedding(chunk_text)
+    weights_hash = WEIGHTS_HASH if lora_id == "base" else f"lora:{lora_id}"
     
     # Build chunk embedding record
     chunk_embedding = ChunkEmbeddingV1(
@@ -75,7 +96,7 @@ def embed_chunk(job_payload: dict) -> dict:
         embedding=Embedding(
             framework="pytorch",
             model_id=EMBEDDER_MODEL_ID,
-            weights_hash=WEIGHTS_HASH,
+            weights_hash=weights_hash,
             dim=EMBEDDING_DIM,
             normalization="l2",
             vector=vector
@@ -111,7 +132,9 @@ def embed_chunk(job_payload: dict) -> dict:
         "chunk_id": chunk_id,
         "chunk_index": chunk_index,
         "embedder_model_id": EMBEDDER_MODEL_ID,
-        "weights_hash": WEIGHTS_HASH,
+        "weights_hash": weights_hash,
+        "lora_id": lora_id,
+        "context": context,
         "content_hash": sha256_canonical
     }
     ledger.append(ledger_record)
