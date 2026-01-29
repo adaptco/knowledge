@@ -28,6 +28,19 @@
 				],
 				"module": "uvicorn"
 			}
+		},
+		{
+			"label": "Batch: Run Current File",
+			"type": "shell",
+			"command": "${file}",
+			"options": {
+				"cwd": "${fileDirname}"
+			},
+			"group": "test",
+			"presentation": {
+				"reveal": "always",
+				"panel": "new"
+			}
 		}
 	]
 }

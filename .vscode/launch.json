@@ -2,6 +2,29 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Launch Chrome",
+            "request": "launch",
+            "type": "chrome",
+            "url": "http://localhost:8080",
+            "webRoot": "
+            "
+        },
+        {
+            "name": "Attach to Chrome",
+            "port": 9222,
+            "request": "attach",
+            "type": "chrome",
+            "webRoot": "${workspaceFolder}"
+        },
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Run json5",
+            "runtimeExecutable": "json5",
+            "cwd": "${workspaceFolder}",
+            "args": []
+        },
+        {
             "type": "node",
             "request": "launch",
             "name": "Run create-jest",
@@ -15,13 +38,6 @@
             "request": "launch",
             "script": "${file}",
             "args": [],
-            "cwd": "${fileDirname}"
-        },
-        {
-            "name": "Batch: Launch Current File",
-            "type": "shell",
-            "request": "launch",
-            "command": "${file}",
             "cwd": "${fileDirname}"
         },
         {
