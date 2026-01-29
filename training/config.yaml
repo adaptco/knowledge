@@ -1,0 +1,6 @@
+algorithm:
+  name: "EmbeddingCircuit-PPO"
+  embedding_dim: 64
+  timesteps: 1000000
+  constraints:
+    lap_time_variance: 0.001

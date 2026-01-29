@@ -1,0 +1,65 @@
+{
+    "name": "suzuki_v1",
+    "version": "1.0.0",
+    "inputs": [
+        {
+            "name": "yaw",
+            "type": "float",
+            "range": [
+                -3.14,
+                3.14
+            ]
+        },
+        {
+            "name": "speed",
+            "type": "float",
+            "range": [
+                0,
+                300
+            ]
+        },
+        {
+            "name": "lat_g",
+            "type": "float",
+            "range": [
+                -5,
+                5
+            ]
+        },
+        {
+            "name": "slip_angle",
+            "type": "float",
+            "range": [
+                -1,
+                1
+            ]
+        }
+    ],
+    "outputs": [
+        {
+            "name": "steer",
+            "type": "float",
+            "range": [
+                -1,
+                1
+            ]
+        },
+        {
+            "name": "throttle",
+            "type": "float",
+            "range": [
+                0,
+                1
+            ]
+        },
+        {
+            "name": "brake",
+            "type": "float",
+            "range": [
+                0,
+                1
+            ]
+        }
+    ],
+    "embedding_dim": 64
+}
